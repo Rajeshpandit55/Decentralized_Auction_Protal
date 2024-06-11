@@ -1,60 +1,37 @@
-body {
-    font-family: Arial, sans-serif;
-}
+/* AuctionCreator.css */
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
+.neumorphism-container {
+    background-color: #f0f0f0;
+    border-radius: 20px;
     padding: 20px;
-}
-
-h2 {
-    text-align: center;
-}
-
-.form-group {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-textarea,
-select {
-    width: 100%;
+    box-shadow: 8px 8px 16px #bebebe, -8px -8px 16px #ffffff;
+  }
+  
+  .neumorphism-form {
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: inset 6px 6px 10px #bebebe, inset -6px -6px 10px #ffffff;
+  }
+  
+  .neumorphism-input {
+    background-color: #f0f0f0;
+    border-radius: 10px;
     padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-select {
-    width: calc(100% - 120px);
-    margin-right: 10px;
-}
-
-/* button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    color: #fff;
-    background-color: #007bff;
+    box-shadow: inset 3px 3px 5px #bebebe, inset -3px -3px 5px #ffffff;
+  }
+  
+  .neumorphism-button {
+    background-color: #f0f0f0;
     border: none;
-    border-radius: 5px;
+    border-radius: 10px;
+    padding: 10px 20px;
+    box-shadow: 3px 3px 5px #bebebe, -3px -3px 5px #ffffff;
     cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button:active {
-    background-color: #004080;
-} */
+    transition: all 0.3s ease;
+  }
+  
+  .neumorphism-button:hover {
+    box-shadow: 1px 1px 2px #bebebe, -1px -1px 2px #ffffff;
+  }
+  

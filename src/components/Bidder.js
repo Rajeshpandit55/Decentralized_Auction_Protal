@@ -1,57 +1,99 @@
-import React from 'react'
-import './Bidder.css';
+import React, { useState } from 'react';
 
 function Bidder() {
 
+  const [formData, setFormData] = useState({
+    userName: "",
+    productId: "",
+    paymentValue: "",
+    paymentLabel: ""
+  })
+
+  function changeHandler(event) {
+
+    setFormData((prevData) => {
+      return {
+        ...prevData,
+        [event.target.name]: event.target.value,
+      };
+    })
+  }
+
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    console.log(formData);
+
+  }
+
+
   return (
-       <div className="container">
-        <h2>Bidder Form</h2>
-        <form action="#">
-            <div className="form-group">
-                <label htmlFor="product-id">Product ID:</label>
-                <input type="text" id="product-id" name="product-id" required=""/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="name">Name:</label>
-                <input type="text" id="name" name="name" required=""/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="email">Email Address:</label>
-                <input type="email" id="email" name="email" required=""/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="contact-number">Contact Number:</label>
-                <input type="tel" id="contact-number" name="contact-number"/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="address">Address:</label>
-                <input type="text" id="street-address" name="street-address" placeholder="Street Address" required=""/>
-                <input type="text" id="city" name="city" placeholder="City" required=""/>
-                <input type="text" id="state" name="state" placeholder="State" required=""/>
-                <input type="text" id="zip-code" name="zip-code" placeholder="ZIP Code" required=""/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="bid-amount">Bid Amount:</label>
-                <input type="number" id="bid-amount" name="bid-amount" required=""/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="payment-method">Payment Method:</label>
-                <select id="payment-method" name="payment-method" required>
-                    <option value="credit-card">Credit Card</option>
-                    <option value="bank-transfer">Bank Transfer</option>
-                    <option value="other">Other</option>
-                </select>
-                <input type="text" id="other-payment-method" name="other-payment-method" placeholder="Specify other method"/>
-            </div>
-            <div className="form-group">
-                <label htmlFor="additional-comments">Additional Comments/Notes:</label>
-                <textarea id="additional-comments" name="additional-comments" rows="4"></textarea>
-            </div>
-            <button type="submit">Submit Bid</button>
-        </form>
+    <div className="neumorphism-container max-w-lg mx-auto bg-white shadow-md p-8 mt-10 rounded-lg">
+      <h2 className="text-xl font-semibold mb-4 text-center color-black-900">REGISTER TO BID</h2>
+
+      <form className="max-w-md mx-auto space-y-4" onSubmit={submitHandler}>
+        <div className="flex flex-col">
+          <label htmlFor="username" className="mb-2">Username</label>
+          <input
+            type="text"
+            id="username"
+            value={formData.userName}
+            onChange={changeHandler}
+            name="userName"
+            className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+            required />
+        </div>
+        <div className="flex flex-col">
+          <label htmlFor="product-id" className="mb-2">Product ID</label>
+          <input
+            type="text"
+            id="product-id"
+            value={formData.productId}
+            onChange={changeHandler}
+            name="productId" className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+            required
+          />
+        </div>
+        {/* <div className="flex flex-col">
+          <label htmlFor="bid-amount" className="mb-2">Bid Amount:</label>
+          <input type="number" id="bid-amount" name="bid-amount" className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500" required />
+        </div> */}
+        <div className="flex flex-col">
+          <label htmlFor="payment-method" className="mb-2">Payment Method:</label>
+          <select
+            id="payment-method"
+            name="paymentLabel"
+            value={formData.paymentLabel}
+            onChange={changeHandler}
+            className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
+            required>
+            <option id="payment-method" value="Ethereum">Ethereum</option>
+            <option id="payment-method" value="credit-card">Credit Card</option>
+            <option id="payment-method" value="bank-transfer">Bank Transfer</option>
+            <option id="payment-method" value="other">Other</option>
+          </select>
+          {/* Additional input for 'Other' payment method */}
+          <input
+            type="text"
+            id="paymentValue"
+            name="paymentValue"
+            value={formData.paymentValue}
+            onChange={changeHandler}
+            className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500 mt-2"
+            placeholder="Enter Bid Amount"
+            required
+          />
+        </div>
+        <div className="text-center">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+            Submit Bid
+          </button>
+        </div>
+      </form>
     </div>
-    
-  )
+  );
 }
 
-export default Bidder
+export default Bidder;

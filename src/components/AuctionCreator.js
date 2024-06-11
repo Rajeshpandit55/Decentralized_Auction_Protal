@@ -1,83 +1,262 @@
-import React from 'react'
-import './AuctionCreator.css'
+import React from 'react';
+import { useState } from 'react';
+// import Web3 from 'web3';
 
 function AuctionCreator() {
-    return (
-        <div>
-            
-        <form className="">
-          <h2>Auction Form</h2>
-    
-          <label htmlFor="auction-title">Auction Title:</label>
-          <input type="text" id="auction-title" name="auction-title" required />
-    
-          <label htmlFor="description">Description:</label>
-          <textarea id="description" name="description" required></textarea>
-    
-          <label htmlFor="starting-bid-price">Starting Bid Price:</label>
-          <input type="number" id="starting-bid-price" name="starting-bid-price" required />
-    
-          <label htmlFor="reserve-price">Reserve Price:</label>
-          <input type="number" id="reserve-price" name="reserve-price" required />
-    
-          <label htmlFor="auction-duration">Auction Duration:</label>
-          <input type="datetime-local" id="start-time" name="start-time" required />
-          <input type="datetime-local" id="end-time" name="end-time" required />
-          <select id="duration" name="duration">
-            <option value="1">1 Day</option>
-            <option value="3">3 Days</option>
-            <option value="7">1 Week</option>
-          </select>
-    
-          <label htmlFor="bid-increment">Bid Increment:</label>
-          <input type="number" id="bid-increment" name="bid-increment" required />
-    
-          <label htmlFor="payment-methods">Payment Methods:</label>
-          <input type="checkbox" id="credit-card" name="payment-method" value="credit-card" required />
-          <label htmlFor="credit-card">Credit Card</label>
-          <input type="checkbox" id="paypal" name="payment-method" value="paypal" required />
-          <label htmlFor="paypal">PayPal</label>
-          <input type="checkbox" id="crypto" name="payment-method" value="crypto" required />
-          <label htmlFor="crypto">Cryptocurrency</label>
-    
-          <label htmlFor="starting-period-bid">Starting Period htmlFor Bid:</label>
-          <input type="date" id="starting-period-bid" name="starting-period-bid" required />
-    
-          <label htmlFor="ending-period-bid">Ending Period htmlFor Bid:</label>
-          <input type="date" id="ending-period-bid" name="ending-period-bid" required />
-    
-          <label htmlFor="delivery-details">Delivery/Transfer Details:</label>
-          <textarea id="delivery-details" name="delivery-details" required></textarea>
-    
-          <label htmlFor="seller-name">Seller Name:</label>
-          <input type="text" id="seller-name" name="seller-name" required />
-    
-          <label htmlFor="seller-email">Seller Email:</label>
-          <input type="email" id="seller-email" name="seller-email" required />
-    
-          <label htmlFor="seller-phone">Seller Phone:</label>
-          <input type="tel" id="seller-phone" name="seller-phone" required />
-    
-          <label htmlFor="category">Category:</label>
-          <select id="category" name="category">
-            <option value="electronics">Electronics</option>
-            <option value="art">Art</option>
-            <option value="collectibles">Collectibles</option>
-            <option value="other">Other</option>
-          </select>
-    
-          <label htmlFor="photos-files">Upload Photos/Files:</label>
-          <input type="file" id="photos-files" name="photos-files" required />
-    
-          <label htmlFor="terms-conditions">
-            <input type="checkbox" id="terms-conditions" name="terms-conditions" required />
-            I agree to the terms and conditions
-          </label>
-          
-          <button type="submit">Submit</button>
-        </form>
+
+  const [formData, setFormData] = useState({
+
+    objectName: "",
+    ownerName: "",
+    ownerEmail: "",
+    previousHash: "",
+    reversePrice: "",
+    ethereum: "",
+    startingTime: "",
+    endingTime: "",
+    category: "",
+    desc: "",
+    files: ""
+
+  })
+
+
+  function changeHandler(event) {
+
+    const { name, type, value, checked } = event.target;
+
+    setFormData((prevFormData) => {
+      return {
+        ...prevFormData,
+        [name]: type === "checked" ? checked : value,
+      };
+    });
+  }
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    // onConnect();
+    console.log("Printing the all data");
+    console.log(formData);
+  }
+
+  return (
+    <div className="neumorphism-container max-w-lg mx-auto bg-white shadow-md p-8 mt-10 rounded-lg">
+      <h2 className="text-xl font-semibold mb-4 text-center weight-8">Auction Form</h2>
+      <form className="space-y-4 neumorphism-form" onSubmit={submitHandler}>
+
+        {/* Object Name */}
+        <label htmlFor="auction-title" className="block">
+          Object Name:
+          <input
+            type="text"
+            value={formData.objectName}
+            onChange={changeHandler}
+            id="objectName"
+            name="objectName"
+            className=" neumorphism-input mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required />
+        </label>
+
+        {/* Owner Name */}
+        <label htmlFor="seller-name" className="block">
+          Owner Name:
+          <input
+            type="text"
+            value={formData.ownerName}
+            onChange={changeHandler}
+            id="seller-name"
+            name="ownerName"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required />
+        </label>
+
+        {/* Owner Email */}
+        <label htmlFor="seller-email" className="block">
+          Owner Email:
+          <input type="email"
+            value={formData.ownerEmail}
+            onChange={changeHandler}
+            id="seller-email"
+            name="ownerEmail"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required />
+        </label>
+
+        {/* Previous Hash Value */}
+        <label htmlFor="hash_value" className="block">
+          Previous Object Hash Value:
+          <input type="text"
+            value={formData.previousHash}
+            onChange={changeHandler}
+            id="hash_value"
+            name="previousHash"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            placeholder="Previous Hash Value of Object"
+            required />
+        </label>
+
+        {/* Reserve Price */}
+        <label htmlFor="reserve-price" className="block">
+          Reserve Price:
+          <input type="number"
+            value={formData.reversePrice}
+            onChange={changeHandler}
+            id="reserve-price"
+            name="reversePrice"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required />
+        </label>
+
+        {/* Bid Increment */}
+        {/* <label htmlFor="bid-increment" className="block">
+          Bid Increment:
+          <input type="number" value={bidIncrement} onChange={bidIncrementHandler} id="bid-increment" name="bid-increment" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+        </label> */}
+
+        
+        {/* Payment Methods */}
+        <label className="block">Payment Methods:</label>
+        <div className="space-y-2">
+          <div>
+            <input
+              type="radio"
+              id="Ethereum"
+              name="ethereum"
+              chacked={formData.ethereum}
+              onChange={changeHandler}
+              required />
+            <label htmlFor="credit-card" id='Ethereum'>Ethereum</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="credit-card"
+              chacked={formData.ethereum}
+              onChange={changeHandler}
+              name="ethereum"
+              required />
+            <label htmlFor="credit-card" id="credit-card">Credit Card</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="paypal"
+              chacked={formData.ethereum}
+              onChange={changeHandler}
+              name="ethereum"
+              required />
+            <label htmlFor="paypal" id="paypal">PayPal</label>
+          </div>
         </div>
-      )
+        {/* Auction Duration */}
+        {/* <label className="block">Auction Duration:</label> */}
+        <div className="space-y-2">
+
+          {/* <div>
+            <label htmlFor="starting-period-bid">Starting Day for Auction:</label>
+            <input
+              type="date"
+              id="starting-period-bid"
+              name="starting-period-bid"
+              value={startingDay}
+              onChange={changeHandler} />
+          </div>
+          <div>
+            <label htmlFor="ending-period-bid">Ending Day for Auction:</label>
+            <input
+              type="date"
+              id="ending-period-bid"
+              name="ending-period-bid"
+              value={endingDay}
+              onChange={endingDayHandler} />
+          </div> */}
+
+          <div>
+            <label htmlFor="timefrom"> Starting Time for Auction:</label>
+            <input
+              type="time"
+              id="timefrom"
+              name="startingTime"
+              value={formData.startingTime}
+              onChange={changeHandler}
+            />
+          </div>
+
+          <div>
+            <label htmlFor="timeto">Ending Time for Auction:</label>
+            <input
+              type="time"
+              id="timeto"
+              name="endingTime"
+              value={formData.endingTime}
+              onChange={changeHandler}
+            />
+          </div>
+        </div>
+
+        {/* Category */}
+        <label htmlFor="category" className="block">Category:</label>
+        <select
+          id="category"
+          name="category"
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          value={formData.category}
+          onChange={changeHandler}>
+
+          <option id="category" value="art">Art</option>
+          <option id="category" value="photography">Photography</option>
+          <option id="category" value="crypto">Crypto</option>
+          <option id="category" value="tweet">Tweet</option>
+          <option id="category" value="music">Music</option>
+
+        </select>
+        <label htmlFor="description" className="block">
+          Description:
+          <textarea
+            id="description"
+            name="desc"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            value={formData.desc}
+            onChange={changeHandler}
+          />
+        </label>
+
+
+        <label htmlFor="photos-files" className="block">
+          Upload Photos/Files:
+          <input
+            type="file"
+            id="photos-files"
+            name="files"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            value={formData.files}
+            onChange={changeHandler} />
+        </label>
+
+
+        <div className="flex items-center">
+          <input
+            type="checkbox"
+            id="terms-conditions"
+            name="terms-conditions"
+            className="mr-2"
+            required
+          />
+          <label htmlFor="terms-conditions" id='terms-conditions'>I agree to the terms and conditions</label>
+        </div>
+
+        <div className="text-center">
+          <button
+            type="submit"
+            className="neumorphism-button bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600">
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+
 }
 
-export default AuctionCreator
+export default AuctionCreator;

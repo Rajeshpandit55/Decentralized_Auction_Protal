@@ -30,7 +30,7 @@ function App() {
         <Route path="/Signup" element={<SignUp />} />
         <Route path="/Login" element={<Login />} />
            {/* Sub header routes */}
-        <Route path='/AuctionCreater' element={<AuctionCreator />} />
+        <Route path='/AuctionCreator' element={<AuctionCreator />} />
         <Route path='/Bidder' element={<Bidder />} />
       </Routes>
       
