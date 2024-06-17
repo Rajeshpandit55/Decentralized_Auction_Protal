@@ -4,7 +4,7 @@ function Bidder() {
 
   const [formData, setFormData] = useState({
     userName: "",
-    productId: "",
+    // productId: "",
     paymentValue: "",
     paymentLabel: ""
   })
@@ -43,7 +43,7 @@ function Bidder() {
             className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
             required />
         </div>
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           <label htmlFor="product-id" className="mb-2">Product ID</label>
           <input
             type="text"
@@ -53,7 +53,7 @@ function Bidder() {
             name="productId" className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
             required
           />
-        </div>
+        </div> */}
         {/* <div className="flex flex-col">
           <label htmlFor="bid-amount" className="mb-2">Bid Amount:</label>
           <input type="number" id="bid-amount" name="bid-amount" className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500" required />
@@ -67,7 +67,7 @@ function Bidder() {
             onChange={changeHandler}
             className="py-2 px-3 rounded border border-gray-300 focus:outline-none focus:border-blue-500"
             required>
-            <option id="payment-method" value="Ethereum">Ethereum</option>
+            <option id="payment-method" value="Ethereum">Ether</option>
             <option id="payment-method" value="credit-card">Credit Card</option>
             <option id="payment-method" value="bank-transfer">Bank Transfer</option>
             <option id="payment-method" value="other">Other</option>

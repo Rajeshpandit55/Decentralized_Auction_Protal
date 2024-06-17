@@ -6,7 +6,7 @@ import {ADD,ABI} from './ADDandABI';
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    // const [confirmPassword,setconfirmPassword]=useState('');
+    
   
    
     const [accountName, setAccountName] = useState('');
@@ -39,7 +39,7 @@ function Login() {
                 // setAccountName(userAccounts[0]);
                 const ContractInstance = new web3.eth.Contract(ABI, ADD);
                 // setConstract(ContractInstance);
-                const res=await ContractInstance.methods.authenticatePassword(username).call();
+                const res=await ContractInstance.methods.login(username,password).call();
                 if(res===password){
                     console.log("login successfull");
                 }else{

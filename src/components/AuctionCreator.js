@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-// import Web3 from 'web3';
+import Web3 from 'web3';
+import {ADD,ABI} from './ADDandABI';
 
 function AuctionCreator() {
 
@@ -12,14 +13,13 @@ function AuctionCreator() {
     previousHash: "",
     reversePrice: "",
     ethereum: "",
-    startingTime: "",
-    endingTime: "",
+    // startingTime: "",
+    // endingTime: "",
     category: "",
     desc: "",
     files: ""
 
   })
-
 
   function changeHandler(event) {
 
@@ -33,9 +33,58 @@ function AuctionCreator() {
     });
   }
 
+  const detectProvider = () => {
+    let provider;
+    if (window.ethereum) {
+        provider = window.ethereum;
+        // console.log("window.ethereum");
+    } else if (window.web3) {
+        provider = window.web3.currentProvider;
+        // console.log("window.web3");
+    } else {
+        console.log("non-ethereum browser");
+    }
+    return provider;
+}
+
+
+const onConnect = async (formData) => {
+    try {
+        const currProvider = detectProvider();
+        if (currProvider) {
+            await currProvider.request({ method: 'eth_requestAccounts' });
+            const web3 = new Web3(currProvider);
+            const userAccounts = await web3.eth.getAccounts();
+            // setAccountName(userAccounts[0]);
+            const ContractInstance = new web3.eth.Contract(ABI, ADD);
+            // setConstract(ContractInstance);
+            await ContractInstance.methods.createAuction(
+              formData.objectName,
+              formData.ownerName,
+              formData.ownerEmail,
+              formData.previousObjectHashValue,
+              formData.reversePrice,
+              formData.paymentMethod,
+              formData.category,
+              formData.desc).send();
+            // if(res){
+            //     console.log("AuctionCreated  successfull");
+            // }else{
+            //     console.log("Auction creation failed");
+            // }
+            // const res = await contract.methods.viewUserRegistration().call();
+            //console.log(res);
+        }
+    } catch (err) {
+        console.log("error at AuctionCreation");
+        console.log(err);
+        // console.error(err);
+    }
+}
+
   const submitHandler = (event) => {
     event.preventDefault();
-    // onConnect();
+    onConnect();
     console.log("Printing the all data");
     console.log(formData);
   }
@@ -121,18 +170,19 @@ function AuctionCreator() {
           <div>
             <input
               type="radio"
-              id="Ethereum"
+              id="ether"
               name="ethereum"
-              chacked={formData.ethereum}
+              checked={formData.ethereum}
               onChange={changeHandler}
               required />
-            <label htmlFor="credit-card" id='Ethereum'>Ethereum</label>
+            <label htmlFor="credit-card" id='ether'>Ether</label>
           </div>
-          <div>
+          </div>
+          {/* <div>
             <input
               type="radio"
               id="credit-card"
-              chacked={formData.ethereum}
+              checked={formData.ethereum}
               onChange={changeHandler}
               name="ethereum"
               required />
@@ -142,16 +192,16 @@ function AuctionCreator() {
             <input
               type="radio"
               id="paypal"
-              chacked={formData.ethereum}
+              checked={formData.ethereum}
               onChange={changeHandler}
               name="ethereum"
               required />
             <label htmlFor="paypal" id="paypal">PayPal</label>
           </div>
-        </div>
+        </div> */}
         {/* Auction Duration */}
         {/* <label className="block">Auction Duration:</label> */}
-        <div className="space-y-2">
+        {/* <div className="space-y-2"> */}
 
           {/* <div>
             <label htmlFor="starting-period-bid">Starting Day for Auction:</label>
@@ -172,7 +222,7 @@ function AuctionCreator() {
               onChange={endingDayHandler} />
           </div> */}
 
-          <div>
+          {/* <div>
             <label htmlFor="timefrom"> Starting Time for Auction:</label>
             <input
               type="time"
@@ -192,8 +242,9 @@ function AuctionCreator() {
               value={formData.endingTime}
               onChange={changeHandler}
             />
-          </div>
-        </div>
+          </div> */}
+
+        {/* </div> */}
 
         {/* Category */}
         <label htmlFor="category" className="block">Category:</label>

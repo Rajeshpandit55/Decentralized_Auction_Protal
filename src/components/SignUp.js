@@ -7,7 +7,7 @@ function SignUp() {
 
     // const initialValues={email:"",password:"",confirmPassword:""};
 
-    const [gmail, setgmail] = useState('');
+    const [userGmail, setUserGmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setconfirmPassword] = useState('');
 
@@ -28,7 +28,7 @@ function SignUp() {
     }
 
 
-    const onConnect = async (gmail, password) => {
+    const onConnect = async (userGmail, password) => {
         try {
             const currProvider = detectProvider();
             if (currProvider) {
@@ -38,7 +38,7 @@ function SignUp() {
                 // setAccountName(userAccounts[0]);
                 const ContractInstance = new web3.eth.Contract(ABI, ADD);
                 // setConstract(ContractInstance);
-                const resultReg = await ContractInstance.methods.setUserRegistration(gmail, password).send({ from: userAccounts[0], gas: 300000 });
+                const resultReg = await ContractInstance.methods.signup(userGmail, password).send({ from: userAccounts[0], gas: 300000 });
                 // const res = await contract.methods.viewUserRegistration().call();
                 console.log(resultReg);
             }
@@ -50,15 +50,15 @@ function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("gmail:", gmail);
+        console.log("gmail:", userGmail);
         console.log("password:", password);
-        onConnect(gmail, password)
-        setgmail("");
+        onConnect(userGmail, password)
+        setUserGmail("");
         setPassword("");
         setconfirmPassword("");
     }
     const gmailHandle = (e) => {
-        setgmail(e.target.value);
+        setUserGmail(e.target.value);
     }
     const passwordHandler = (e) => {
         setPassword(e.target.value);
@@ -82,7 +82,7 @@ function SignUp() {
                                 <div>
                                     {/* usergamil */}
                                     <label for="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-                                    <input type="email" value={gmail} onChange={gmailHandle} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
+                                    <input type="email" value={userGmail} onChange={gmailHandle} name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg
                                     focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="" />
                                 </div>
                                 <div>
