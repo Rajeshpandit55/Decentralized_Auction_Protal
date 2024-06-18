@@ -66,7 +66,7 @@ const onConnect = async (formData) => {
               formData.reversePrice,
               formData.paymentMethod,
               formData.category,
-              formData.desc).send();
+              formData.desc).send({ from: userAccounts[0], gas: 300000 });
             // if(res){
             //     console.log("AuctionCreated  successfull");
             // }else{
@@ -87,6 +87,7 @@ const onConnect = async (formData) => {
     onConnect();
     console.log("Printing the all data");
     console.log(formData);
+    
   }
 
   return (

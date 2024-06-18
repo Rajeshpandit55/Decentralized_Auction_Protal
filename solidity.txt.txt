@@ -1,0 +1,167 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.7.0 <0.9.0;
+
+contract AuctionPortal {
+    
+    address payable public auctionManager;
+
+    struct ItemMaster {
+        string objectName;
+        string ownerName;
+        string ownerEmail;
+        string previousObjectHashValue;
+        uint initialBidValue;
+        string paymentMethod;
+        string category;
+        string description;
+        bool auctionResult;
+    }
+
+    struct BidderMaster {
+        string bidderEmail;
+        bytes32 passwordHash;
+        address payable bidderAddress;
+    }
+
+    struct AuctionRegister {
+        address payable userAddress;
+        uint bidValue;
+    }
+
+    uint public chainNo;
+    mapping(uint => AuctionRegister) public auctionChain;
+
+    ItemMaster[3] public auctionItems;
+    uint public currentAuctionItemIndex;
+    mapping(address => BidderMaster)public auctionBidderRegister;
+    mapping(address => bool) public registeredBidders;
+    mapping(address => string) public emailByAddress;
+
+    uint public regNo;
+    uint public maxBidValue;
+    AuctionRegister public winner;
+
+    // Events
+    event SignupSuccessful(address indexed user, string email);
+    event AuctionCreated(string itemName, uint initialBidValue, string ownerEmail);
+    event BidPlaced(address indexed user, uint bidValue);
+    event AuctionResultDeclared(address winner, uint winningBid);
+    event BidAmountTransferred(address indexed user, uint amount);
+    event RollbackOccurred();
+
+    constructor() payable {
+        auctionManager = payable(msg.sender);
+        chainNo = 0;
+        regNo = 0;
+        currentAuctionItemIndex = 0;
+    }
+
+    // Modifiers
+    modifier onlyAuctionManager() {
+        require(msg.sender == auctionManager, "Auction Denied: Not valid auction manager");
+        _;
+    }
+
+    modifier checkAuctionBidderRegister() {
+        require(!registeredBidders[msg.sender], "Auction denied: You are already registered.");
+        _;
+    }
+
+    modifier checkAuctionBidderExistence() {
+        require(registeredBidders[msg.sender], "Auction denied: Please register for the auction.");
+        _;
+    }
+
+    modifier validBidValue(uint bidderValue) {
+        require(bidderValue > maxBidValue, "Invalid Bid value");
+        _;
+    }
+
+    modifier onlyWinner() {
+        require(msg.sender == winner.userAddress, "Action denied: Not valid transaction");
+        _;
+    }
+    
+    modifier validTransactionAmount() {
+
+        uint ethtowei= winner.bidValue*1000000000000000000;
+        require(msg.value == ethtowei, "Action denied: Not valid transaction value");
+        _;
+    }
+
+    modifier auctionOngoing() {
+        require(currentAuctionItemIndex < 3, "Auction over: Thank you!");
+        require(!auctionItems[currentAuctionItemIndex].auctionResult, "Auction over: Thank you!");
+        _;
+    }
+
+    // Hashing function for passwords
+    function hashPassword(string memory password) private pure returns (bytes32) {
+        return keccak256(abi.encodePacked(password));
+    }
+
+    // Signup function
+    function signup(string memory userEmail, string memory password) public checkAuctionBidderRegister {
+        // Ensure the signup function is not called by the auction manager
+        require(msg.sender != auctionManager, "Auction Denied: Not valid auction manager");
+        
+        bytes32 passwordHash = hashPassword(password);
+        auctionBidderRegister[msg.sender] = BidderMaster(userEmail, passwordHash, payable(msg.sender));
+        emailByAddress[msg.sender] = userEmail;
+        registeredBidders[msg.sender] = true;
+        regNo++;
+        emit SignupSuccessful(msg.sender, userEmail); // Emit event for successful signup
+    }
+
+    // Login function
+    function login(string memory userEmail, string memory password) public view returns (bool) {
+        require(registeredBidders[msg.sender], "Auction Denied: You are not registered.");
+        BidderMaster storage bidder = auctionBidderRegister[msg.sender];
+        require(keccak256(abi.encodePacked(userEmail)) == keccak256(abi.encodePacked(bidder.bidderEmail)), "Invalid email");
+        require(hashPassword(password) == bidder.passwordHash, "Invalid password");
+        return true;
+    }
+
+    // Set auction item
+    function createAuction(string memory objectName, string memory ownerName,string memory ownerEmail,string memory previousObjectHashValue,uint initialBidValue,string memory paymentMethod,string memory category,string memory description) public onlyAuctionManager {
+        require(currentAuctionItemIndex < 3, "Maximum number of items already set");
+        auctionItems[currentAuctionItemIndex] = ItemMaster(objectName,ownerName,ownerEmail,previousObjectHashValue,initialBidValue,paymentMethod,category,description,false);
+        maxBidValue = initialBidValue;
+        currentAuctionItemIndex++;
+        emit AuctionCreated(objectName, initialBidValue, ownerEmail); // Emit event for auction creation
+    }
+
+    // Place a bid
+    function placeBid(uint myBidValue, string memory bidderEmail) public auctionOngoing checkAuctionBidderExistence validBidValue(myBidValue) {
+        require(keccak256(abi.encodePacked(bidderEmail)) != keccak256(abi.encodePacked(auctionItems[currentAuctionItemIndex].ownerEmail)), "Auction Denied: Auction creator cannot bid");
+
+        auctionChain[chainNo] = AuctionRegister(payable(msg.sender), myBidValue);
+        maxBidValue = myBidValue;
+        chainNo++;
+        emit BidPlaced(msg.sender, myBidValue); // Emit event for bid placement
+    }
+
+    // Declare auction result
+    function declareAuctionResult() public onlyAuctionManager {
+        require(chainNo > 0, "No bids placed");
+        winner = auctionChain[chainNo - 1];
+        auctionItems[currentAuctionItemIndex].auctionResult = true;
+        emit AuctionResultDeclared(winner.userAddress, winner.bidValue); // Emit event for auction result
+    }
+
+    // Transfer bid amount
+    function transferBidAmount() public payable checkAuctionBidderExistence onlyWinner validTransactionAmount {
+        auctionManager.transfer(msg.value);
+        emit BidAmountTransferred(msg.sender, msg.value); // Emit event for bid amount transfer
+    }
+
+    // Rollback function to revert the state in case of any issues
+    function rollback() public onlyAuctionManager {
+        delete auctionItems[currentAuctionItemIndex];
+        chainNo = 0;
+        maxBidValue = 0;
+        delete winner;
+        emit RollbackOccurred(); // Emit event for rollback
+    }
+}
+

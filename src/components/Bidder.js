@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Web3 from 'web3';
+import{ADD,ABI} from './ADDandABI';
 
 function Bidder() {
 
@@ -20,7 +22,49 @@ function Bidder() {
   }
 
 
+  const detectProvider = () => {
+    let provider;
+    if (window.ethereum) {
+        provider = window.ethereum;
+        // console.log("window.ethereum");
+    } else if (window.web3) {
+        provider = window.web3.currentProvider;
+        // console.log("window.web3");
+    } else {
+        console.log("non-ethereum browser");
+    }
+    return provider;
+}
+
+
+const onConnect = async (formData) => {
+    try {
+        const currProvider = detectProvider();
+        if (currProvider) {
+            await currProvider.request({ method: 'eth_requestAccounts' });
+            const web3 = new Web3(currProvider);
+            const userAccounts = await web3.eth.getAccounts();
+            // setAccountName(userAccounts[0]);
+            const ContractInstance = new web3.eth.Contract(ABI, ADD);
+            // setConstract(ContractInstance);
+            await ContractInstance.methods.createAuction(formData.userName,formData.paymentValue).send({ from: userAccounts[0], gas: 300000 });
+            // if(res){
+            //     console.log("AuctionCreated  successfull");
+            // }else{
+            //     console.log("Auction creation failed");
+            // }
+            // const res = await contract.methods.viewUserRegistration().call();
+            //console.log(res);
+        }
+    } catch (err) {
+        console.log("error at while bidding");
+        console.log(err);
+        // console.error(err);
+    }
+}
+
   const submitHandler = (event) => {
+    onConnect();
     event.preventDefault();
     console.log(formData);
 

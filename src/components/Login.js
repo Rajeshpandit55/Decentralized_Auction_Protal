@@ -39,7 +39,7 @@ function Login() {
                 // setAccountName(userAccounts[0]);
                 const ContractInstance = new web3.eth.Contract(ABI, ADD);
                 // setConstract(ContractInstance);
-                const res=await ContractInstance.methods.login(username,password).call();
+                const res=await ContractInstance.methods.login(username,password).call({ from: userAccounts[0], gas: 300000 });
                 if(res===password){
                     console.log("login successfull");
                 }else{
