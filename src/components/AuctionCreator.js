@@ -10,9 +10,10 @@ function AuctionCreator() {
     objectName: "",
     ownerName: "",
     ownerEmail: "",
-    previousHash: "",
+    previousObjectHashValue: "",
     reversePrice: "",
     ethereum: "",
+    paymentMethod:"",
     // startingTime: "",
     // endingTime: "",
     category: "",
@@ -55,9 +56,10 @@ const onConnect = async (formData) => {
             await currProvider.request({ method: 'eth_requestAccounts' });
             const web3 = new Web3(currProvider);
             const userAccounts = await web3.eth.getAccounts();
-            // setAccountName(userAccounts[0]);
+            
             const ContractInstance = new web3.eth.Contract(ABI, ADD);
             // setConstract(ContractInstance);
+            console.log(formData);
             await ContractInstance.methods.createAuction(
               formData.objectName,
               formData.ownerName,
@@ -84,7 +86,7 @@ const onConnect = async (formData) => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    onConnect();
+    onConnect(formData);
     console.log("Printing the all data");
     console.log(formData);
     
@@ -137,10 +139,10 @@ const onConnect = async (formData) => {
         <label htmlFor="hash_value" className="block">
           Previous Object Hash Value:
           <input type="text"
-            value={formData.previousHash}
+            value={formData.previousObjectHashValue}
             onChange={changeHandler}
             id="hash_value"
-            name="previousHash"
+            name="previousObjectHashValue"
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             placeholder="Previous Hash Value of Object"
             required />

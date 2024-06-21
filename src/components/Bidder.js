@@ -64,8 +64,8 @@ const onConnect = async (formData) => {
 }
 
   const submitHandler = (event) => {
-    onConnect();
     event.preventDefault();
+    onConnect(formData);
     console.log(formData);
 
   }
