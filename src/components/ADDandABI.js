@@ -1,8 +1,8 @@
 // import React from "react";
 // import web3 form 'web3';
 
-export const ADD = '0xEf9f1ACE83dfbB8f559Da621f4aEA72C6EB10eBf';
-export const ABI = [
+export const ADD = '0x0498B7c793D7432Cd9dB27fb02fc9cfdBAfA1Fd3';
+export const ABI =[
 	{
 		"inputs": [],
 		"stateMutability": "payable",
