@@ -33,5 +33,7 @@ A decentralized auction platform built on the blockchain to ensure transparency,
 ```bash
 git clone https://github.com/Rajeshpandit55/Decentralized_Auction_Protal.git
 cd Decentralized_Auction_Protal
+
 ### 2.Install Dependencies
+```bash
   npm install
