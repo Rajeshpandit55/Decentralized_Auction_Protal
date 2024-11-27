@@ -50,7 +50,7 @@ npm start
 Connect MetaMask
 Make sure MetaMask is installed in your browser. Set MetaMask to the same network used by your Truffle project (e.g., Ganache or a testnet). Connect your MetaMask wallet to the DApp to be able to interact with the blockchain and place bids.
 
-4. Using the System
+### 4. Using the System
 Create an Auction: As an auction creator, you can list items with a starting price, bid duration, and other auction details.
 Place a Bid: Participants can view auctions and place bids.
 End Auction: The auction automatically ends after the specified time or when a valid bid is placed.
