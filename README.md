@@ -32,6 +32,7 @@ A decentralized auction platform built on the blockchain to ensure transparency,
 ```bash
 git clone https://github.com/Rajeshpandit55/Decentralized_Auction_Protal.git
 cd Decentralized_Auction_Protal
+```
 
 ### 2. Install Dependencies
 
@@ -39,19 +40,22 @@ Install the necessary dependencies for both the backend (smart contracts) and th
 
 ```bash
 npm install
+```
 
  ### 3.Run the Front-End
 Once the smart contracts are successfully deployed, you can run the front-end of the auction system.
 
 Start the React development server:
-npm start
+```bash
+ npm start
+```
 
 
 Connect MetaMask
 Make sure MetaMask is installed in your browser. Set MetaMask to the same network used by your Truffle project (e.g., Ganache or a testnet). Connect your MetaMask wallet to the DApp to be able to interact with the blockchain and place bids.
 
 ### 4. Using the System
-Create an Auction: As an auction creator, you can list items with a starting price, bid duration, and other auction details.
-Place a Bid: Participants can view auctions and place bids.
-End Auction: The auction automatically ends after the specified time or when a valid bid is placed.
-Payment and Settlement: Payments are processed and settled via smart contracts once the auction ends.
+- **Create an Auction**: As an auction creator, you can list items with a starting price, bid duration, and other auction details.
+- **Place a Bid**: Participants can view auctions and place bids.
+- **End Auction**: The auction automatically ends after the specified time or when a valid bid is placed.
+- **Payment and Settlement**: Payments are processed and settled via smart contracts once the auction ends.
